@@ -26,7 +26,6 @@
       );
 
     if (document.location.hash && document.location.hash != "") {
-
       // hide other segment
       document.getElementById("authorized").style.display = "block";
       document.getElementById("preauthorized").style.display = "none";
@@ -40,9 +39,9 @@
 
       // fetch top games list
       fetch("https://api.twitch.tv/helix/games/top", {
-        header: {
+        headers: {
           "Client-ID": client_id,
-          "Authorization": "Bearer " + access_token
+          Authorization: "Bearer " + access_token,
         },
       })
         .then((response) => response.json())
@@ -51,7 +50,7 @@
           document.getElementById("topgame").textContent =
             response.data[0].name;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     } else {
