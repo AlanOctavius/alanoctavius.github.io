@@ -5,7 +5,7 @@
     <a href="" id="authorize">Connect with Twitch</a>
   </div>
 
-  <div id="authorized" hidden="true"> Congrats </div>
+  <div id="authorized" style="display: block;"> Congrats </div>
 
   <script type="text/javascript">
     const client_id = "x6juv2f95gdvktkvae8xhw1llrat1x";
@@ -23,14 +23,15 @@
       );
 
     if (document.location.hash && document.location.hash != "") {
+      console.log("connected")
       var parsedHash = new URLSearchParams(window.location.hash.slice(1));
       if (parsedHash.get("access_token")) {
         var access_token = parsedHash.get("access_token");
       }
     }
     else {
-        document.getElementById('authorised').setAttribute('hidden', 'false');
-        document.getElementById('preauthorized').setAttribute('hidden', 'true');
+        document.getElementById('authorised').style.display = 'none';
+        document.getElementById('preauthorized').style.display = 'block';
 
     }
   </script>
