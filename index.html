@@ -5,11 +5,11 @@
     <a href="" id="authorize">Connect with Twitch</a>
   </div>
 
-  <div id="authorized" style="display: block;"> Congrats </div>
+  <div id="authorized" style="display: block">Congrats</div>
 
   <script type="text/javascript">
-    const client_id = "x6juv2f95gdvktkvae8xhw1llrat1x";
-    const redirect_uri = "https://alanoctavius.github.io/";
+    var client_id = "x6juv2f95gdvktkvae8xhw1llrat1x";
+    var redirect_uri = "https://alanoctavius.github.io/";
 
     document
       .getElementById("authorize")
@@ -23,16 +23,14 @@
       );
 
     if (document.location.hash && document.location.hash != "") {
-      console.log("connected")
+      console.log("connected");
       var parsedHash = new URLSearchParams(window.location.hash.slice(1));
       if (parsedHash.get("access_token")) {
         var access_token = parsedHash.get("access_token");
       }
-    }
-    else {
-        document.getElementById('authorised').style.display = 'none';
-        document.getElementById('preauthorized').style.display = 'block';
-
+    } else {
+      document.getElementById("authorised").style.display = "none";
+      document.getElementById("preauthorized").style.display = "block";
     }
   </script>
 </body>
