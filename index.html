@@ -42,7 +42,7 @@
       fetch("https://api.twitch.tv/helix/games/top", {
         header: {
           "Client-ID": client_id,
-          Authorization: "Bearer " + access_token,
+          "Authorization": "Bearer " + access_token
         },
       })
         .then((response) => response.json())
