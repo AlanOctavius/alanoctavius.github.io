@@ -7,9 +7,7 @@
 
   <div id="authorized" style="display: block">
     Congrats
-    <div>
-      The top game is <span id="topgame"></span>
-    </div>
+    <div>The top game is <span id="topgame"></span></div>
   </div>
 
   <script type="text/javascript">
@@ -28,23 +26,36 @@
       );
 
     if (document.location.hash && document.location.hash != "") {
-      console.log("connected");
+
+      // hide other segment
+      document.getElementById("authorized").style.display = "block";
+      document.getElementById("preauthorized").style.display = "none";
+
+      // get users access token
       var parsedHash = new URLSearchParams(window.location.hash.slice(1));
       if (parsedHash.get("access_token")) {
         var access_token = parsedHash.get("access_token");
+        console.log(access_token);
       }
 
+      // fetch top games list
       fetch("https://api.twitch.tv/helix/games/top", {
         header: {
           "Client-ID": client_id,
-          "Authorization": "Bearer" + access_token,
+          Authorization: "Bearer " + access_token,
         },
       })
         .then((response) => response.json())
         .then((response) => {
-          document.getElementById('topgame').textContent = response.data[0].name
+          // for now just show to game's name
+          document.getElementById("topgame").textContent =
+            response.data[0].name;
+        })
+        .catch(error => {
+          console.log(error);
         });
     } else {
+      // hide data segment
       document.getElementById("authorized").style.display = "none";
       document.getElementById("preauthorized").style.display = "block";
     }
