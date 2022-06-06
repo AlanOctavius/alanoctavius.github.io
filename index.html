@@ -5,7 +5,12 @@
     <a href="" id="authorize">Connect with Twitch</a>
   </div>
 
-  <div id="authorized" style="display: block">Congrats</div>
+  <div id="authorized" style="display: block">
+    Congrats
+    <div>
+      The top game is <span id="topgame"></span>
+    </div>
+  </div>
 
   <script type="text/javascript">
     var client_id = "x6juv2f95gdvktkvae8xhw1llrat1x";
@@ -28,6 +33,17 @@
       if (parsedHash.get("access_token")) {
         var access_token = parsedHash.get("access_token");
       }
+
+      fetch("https://api.twitch.tv/helix/games/top", {
+        header: {
+          "Client-ID": client_id,
+          Authorization: "Bearer" + access_token,
+        },
+      })
+        .then((response) => reponse.json())
+        .then((response) => {
+          document.getElementById('topgame').textContent = reposnse.data[0].name
+        });
     } else {
       document.getElementById("authorized").style.display = "none";
       document.getElementById("preauthorized").style.display = "block";
