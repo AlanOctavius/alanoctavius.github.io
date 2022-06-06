@@ -42,7 +42,7 @@
       })
         .then((response) => response.json())
         .then((response) => {
-          document.getElementById('topgame').textContent = reposnse.data[0].name
+          document.getElementById('topgame').textContent = response.data[0].name
         });
     } else {
       document.getElementById("authorized").style.display = "none";
