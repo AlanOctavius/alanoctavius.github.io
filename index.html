@@ -1,0 +1,37 @@
+<body>
+  Alan's Twitch analysis tool
+
+  <div id="preauthorized">
+    <a href="" id="authorize">Connect with Twitch</a>
+  </div>
+
+  <div id="authorized" hidden="true"> Congrats </div>
+
+  <script type="text/javascript">
+    const client_id = "x6juv2f95gdvktkvae8xhw1llrat1x";
+    const redirect_uri = "https://alanoctavius.github.io/";
+
+    document
+      .getElementById("authorize")
+      .setAttribute(
+        "href",
+        "https://id.twitch.tv/oauth2/authorize?client_id=" +
+          client_id +
+          "&redirect_uri=" +
+          encodeURIComponent(redirect_uri) +
+          "&response_type=token"
+      );
+
+    if (document.location.hash && document.location.hash != "") {
+      var parsedHash = new URLSearchParams(window.location.hash.slice(1));
+      if (parsedHash.get("access_token")) {
+        var access_token = parsedHash.get("access_token");
+      }
+    }
+    else {
+        document.getElementById('authorised').setAttribute('hidden', 'false');
+        document.getElementById('preauthorized').setAttribute('hidden', 'true');
+
+    }
+  </script>
+</body>
