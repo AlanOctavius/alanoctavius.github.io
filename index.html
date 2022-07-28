@@ -56,49 +56,52 @@
           // keep track of which game we are looking at
           var gameIndex = 0;
 
-          // for now just show to game's name
-          document.getElementById("topgame").textContent =
-            response.data[gameIndex].name;
+          response.data.forEach(gameData => {
+            // for now just show to game's name
+            document.getElementById("topgame").textContent =
+            gameData.name;
 
-          // for now just do one game
-          const query = new URLSearchParams(
-            {
-              id: response.data[gameIndex].id,
-              first: 100,
-            }
-          );
+            // for now just do one game
+            const query = new URLSearchParams(
+              {
+                id: gameData.id,
+                first: 100,
+              }
+            );
 
-          fetch("https://api.twitch.tv/helix/streams?" + query.toString(), {
-            headers: {
-              "Client-ID": client_id,
-              Authorization: "Bearer " + access_token,
-            },
-          })
-            .then((response) => response.json())
-            .then((response) => {
-
-
-              const viewCount = [];
-              response.data.forEach(element => {
-                viewCount.push(element.viewer_count);
-                
-              });
-
-              data = [{y: viewCount}];
-
-              layout =  { 
-                margin: { t: 0 },
-                title: "Viewer fall off",
-               };
-
-              document.getElementById('authorized').insertAdjacentHTML('beforeend', chartHTMLStart + gameIndex + chartHTMLEnd);
-
-              TESTER = document.getElementById('tester' + gameIndex);
-              Plotly.newPlot( TESTER, data , layout);
+            fetch("https://api.twitch.tv/helix/streams?" + query.toString(), {
+              headers: {
+                "Client-ID": client_id,
+                Authorization: "Bearer " + access_token,
+              },
             })
-            .catch((error) => {
-              console.log(error);
-            });
+              .then((response) => response.json())
+              .then((response) => {
+
+
+                const viewCount = [];
+                response.data.forEach(element => {
+                  viewCount.push(element.viewer_count);
+                  
+                });
+
+                data = [{y: viewCount}];
+
+                layout =  { 
+                  margin: { t: 0 },
+                  title: "Viewer fall off: " + gameData.name,
+                };
+
+                document.getElementById('authorized').insertAdjacentHTML('beforeend', chartHTMLStart + gameIndex + chartHTMLEnd);
+
+                TESTER = document.getElementById('tester' + gameIndex);
+                Plotly.newPlot( TESTER, data , layout);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+              gameIndex++;
+          });
                 
         })
         .catch((error) => {
