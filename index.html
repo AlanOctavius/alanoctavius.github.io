@@ -89,10 +89,14 @@
 
                 layout =  { 
                   margin: { t: 0 },
-                  title: "Viewer fall off: " + gameData.name,
+                  title: {
+                    text: `Viewer fall off: ` + gameData.name,
+                  },
                 };
 
-                document.getElementById('authorized').insertAdjacentHTML('beforeend', chartHTMLStart + gameIndex + chartHTMLEnd);
+                const HTMLstring =  chartHTMLStart + gameIndex + chartHTMLEnd;
+
+                document.getElementById('authorized').insertAdjacentHTML('beforeend', HTMLstring.repeat(1));
 
                 TESTER = document.getElementById('tester' + gameIndex);
                 Plotly.newPlot( TESTER, data , layout);
