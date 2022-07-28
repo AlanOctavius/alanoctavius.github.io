@@ -1,3 +1,6 @@
+<head>
+  <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+</head>
 <body>
   Alan's Twitch analysis tool
 
@@ -8,6 +11,7 @@
   <div id="authorized" style="display: block">
     Congrats
     <div>The top game is <span id="topgame"></span></div>
+    <div id="tester" style="width:600px;height:250px;"></div>
   </div>
 
   <script type="text/javascript">
@@ -49,6 +53,38 @@
           // for now just show to game's name
           document.getElementById("topgame").textContent =
             response.data[0].name;
+
+          // for now just do one game
+          const query = new URLSearchParams(
+            {
+              id: response.data[0].id,
+              first: 100,
+            }
+          );
+
+          fetch("https://api.twitch.tv/helix/streams?" + query.toString(), {
+            headers: {
+              "Client-ID": client_id,
+              Authorization: "Bearer " + access_token,
+            },
+          })
+            .then((response) => response.json())
+            .then((response) => {
+
+              data = [{y: [1, 2, 4, 8, 16] }];
+
+              layout =  { 
+                margin: { t: 0 },
+                title: "Viewer fall off",
+               };
+
+              TESTER = document.getElementById('tester');
+              Plotly.newPlot( TESTER, data , layout);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+                
         })
         .catch((error) => {
           console.log(error);
