@@ -70,8 +70,13 @@
           })
             .then((response) => response.json())
             .then((response) => {
+              const viewCount = [];
+              response.data.forEach(element => {
+                viewCount.append(element.viewer_count);
+                
+              });
 
-              data = [{y: [1, 2, 4, 8, 16] }];
+              data = [{y: viewCount}];
 
               layout =  { 
                 margin: { t: 0 },
