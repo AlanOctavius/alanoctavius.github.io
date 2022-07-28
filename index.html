@@ -49,10 +49,10 @@
           Authorization: "Bearer " + access_token,
         },
       })
-        .then((response) => response.json())
-        .then((response) => {
+        .then((gameresponse) => gameresponse.json())
+        .then((gameresponse) => {
 
-          response.data.forEach(gameData => {
+          gameresponse.data.forEach(gameData => {
             // for now just show to game's name
             document.getElementById("topgame").textContent =
             gameData.name;
@@ -71,13 +71,13 @@
                 Authorization: "Bearer " + access_token,
               },
             })
-              .then((response) => response.json())
-              .then((response) => {
+              .then((streamresponse) => streamresponse.json())
+              .then((streamresponse) => {
 
-                const localGameId = response.data[0].game_id;
+                const localGameId = streamresponse.data[0].game_id;
                 
                 const viewCount = [];
-                response.data.forEach(element => {
+                streamresponse.data.forEach(element => {
                   viewCount.push(element.viewer_count);
                   
                 });
@@ -85,7 +85,7 @@
                 data = [{y: viewCount}];
 
                 layout =  {
-                  title: 'Viewer fall off: ' + gameData.name,
+                  title: 'Viewer fall off: ' + streamresponse.data[0].game_name,
                 };
 
                 const HTMLstring =  chartHTMLStart + localGameId + chartHTMLEnd;
