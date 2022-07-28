@@ -11,12 +11,14 @@
   <div id="authorized" style="display: block">
     Congrats
     <div>The top game is <span id="topgame"></span></div>
-    <div id="tester" style="width:600px;height:250px;"></div>
   </div>
 
   <script type="text/javascript">
     var client_id = "x6juv2f95gdvktkvae8xhw1llrat1x";
     var redirect_uri = "https://alanoctavius.github.io/";
+
+    const chartHTMLStart = '<div id="tester'
+    const chartHTMLEnd = '" style="width:600px;height:250px;"></div>'
 
     document
       .getElementById("authorize")
@@ -50,14 +52,18 @@
       })
         .then((response) => response.json())
         .then((response) => {
+
+          // keep track of which game we are looking at
+          var gameIndex = 0;
+
           // for now just show to game's name
           document.getElementById("topgame").textContent =
-            response.data[0].name;
+            response.data[gameIndex].name;
 
           // for now just do one game
           const query = new URLSearchParams(
             {
-              id: response.data[0].id,
+              id: response.data[gameIndex].id,
               first: 100,
             }
           );
@@ -70,6 +76,8 @@
           })
             .then((response) => response.json())
             .then((response) => {
+
+
               const viewCount = [];
               response.data.forEach(element => {
                 viewCount.push(element.viewer_count);
@@ -83,7 +91,9 @@
                 title: "Viewer fall off",
                };
 
-              TESTER = document.getElementById('tester');
+              document.getElementById('authorized').innerHTML.push(chartHTMLStart + gameIndex + chartHTMLEnd);
+
+              TESTER = document.getElementById('tester' + gameIndex);
               Plotly.newPlot( TESTER, data , layout);
             })
             .catch((error) => {
