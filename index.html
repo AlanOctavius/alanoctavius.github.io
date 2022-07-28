@@ -72,7 +72,7 @@
             .then((response) => {
               const viewCount = [];
               response.data.forEach(element => {
-                viewCount.append(element.viewer_count);
+                viewCount.push(element.viewer_count);
                 
               });
 
