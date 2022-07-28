@@ -91,7 +91,7 @@
                 title: "Viewer fall off",
                };
 
-              document.getElementById('authorized').innerHTML.push(chartHTMLStart + gameIndex + chartHTMLEnd);
+              document.getElementById('authorized').insertAdjacentHTML('beforeend', chartHTMLStart + gameIndex + chartHTMLEnd);
 
               TESTER = document.getElementById('tester' + gameIndex);
               Plotly.newPlot( TESTER, data , layout);
