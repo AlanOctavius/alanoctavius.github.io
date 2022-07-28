@@ -53,9 +53,6 @@
         .then((response) => response.json())
         .then((response) => {
 
-          // keep track of which game we are looking at
-          var gameIndex = 0;
-
           response.data.forEach(gameData => {
             // for now just show to game's name
             document.getElementById("topgame").textContent =
@@ -78,6 +75,7 @@
               .then((response) => response.json())
               .then((response) => {
 
+                var localGameId = response.data[0].game_id;
 
                 const viewCount = [];
                 response.data.forEach(element => {
@@ -94,17 +92,16 @@
                   },
                 };
 
-                const HTMLstring =  chartHTMLStart + gameIndex + chartHTMLEnd;
+                const HTMLstring =  chartHTMLStart + localGameId + chartHTMLEnd;
 
                 document.getElementById('authorized').insertAdjacentHTML('beforeend', HTMLstring.repeat(1));
 
-                TESTER = document.getElementById('tester' + gameIndex);
+                TESTER = document.getElementById('tester' + localGameId);
                 Plotly.newPlot( TESTER, data , layout);
               })
               .catch((error) => {
                 console.log(error);
               });
-              gameIndex++;
           });
                 
         })
