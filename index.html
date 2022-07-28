@@ -75,7 +75,7 @@
               .then((response) => {
 
                 var localGameId = response.data[0].game_id;
-
+                
                 const viewCount = [];
                 response.data.forEach(element => {
                   viewCount.push(element.viewer_count);
@@ -89,7 +89,7 @@
                 };
 
                 const HTMLstring =  chartHTMLStart + localGameId + chartHTMLEnd;
-
+                console.log(HTMLstring);
                 document.getElementById('authorized').insertAdjacentHTML('beforeend', HTMLstring.repeat(1));
 
                 TESTER = document.getElementById('tester' + localGameId);
