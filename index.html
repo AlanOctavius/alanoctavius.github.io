@@ -77,10 +77,9 @@
             },
           }))
         });
-        Promise.all(promiseList).then((responseList) => {
-
-          responseList.forEach(response => {
-            data = response.json();
+        Promise.all(promiseList).then((responses) => {
+          Promise.all(responses.map(res => res.json()))
+        }).then(data => {
 
             const localGameId = data[0].game_id;
             
@@ -101,13 +100,11 @@
             console.log(`more localid: ${streamresponse.data[0].game_id}`)
             TESTER = document.getElementById('tester' + localGameId);
             Plotly.newPlot( TESTER, data , layout);
-          })
         })
-        .catch((error) => {
-          console.log(error);
-        });
-      });
-                
+      })
+      .catch((error) => {
+        console.log(error);
+      });                
         
     } else {
       // hide data segment
