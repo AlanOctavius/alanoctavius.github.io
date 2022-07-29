@@ -88,7 +88,7 @@
                   title: 'Viewer fall off: ' + streamresponse.data[0].game_name,
                 };
 
-                const HTMLstring =  '<div id="tester${localGameId}" style="width:600px;height:250px;"></div>';
+                const HTMLstring =  `<div id="tester${localGameId}" style="width:600px;height:250px;"></div>`;
                 console.log(HTMLstring);
                 document.getElementById('authorized').insertAdjacentHTML('beforeend', HTMLstring.repeat(1));
 
