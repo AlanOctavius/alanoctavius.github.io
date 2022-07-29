@@ -80,11 +80,11 @@
         Promise.all(promiseList).then((responses) => 
           Promise.all(responses.map(res => res.json()))
         ).then(dataList => {
-          dataList.forEach(data => {
-            const localGameId = data[0].game_id;
+          dataList.forEach(streamData => {
+            const localGameId = streamData.data[0].game_id;
             
             const viewCount = [];
-            streamresponse.data.forEach(element => {
+            streamData.data.forEach(element => {
               viewCount.push(element.viewer_count);
               
             });
@@ -92,12 +92,12 @@
             data = [{y: viewCount}];
 
             layout =  {
-              title: 'Viewer fall off: ' + streamresponse.data[0].game_name,
+              title: 'Viewer fall off: ' + streamData.data[0].game_name,
             };
 
             
             console.log(`localid: ${localGameId}`);
-            console.log(`more localid: ${streamresponse.data[0].game_id}`)
+            console.log(`more localid: ${streamData.data[0].game_id}`)
             TESTER = document.getElementById('tester' + localGameId);
             Plotly.newPlot( TESTER, data , layout);
           })
