@@ -77,9 +77,9 @@
             },
           }))
         });
-        Promise.all(promiseList).then((responses) => {
+        Promise.all(promiseList).then((responses) => 
           Promise.all(responses.map(res => res.json()))
-        }).then(dataList => {
+        ).then(dataList => {
           dataList.forEach(data => {
             const localGameId = data[0].game_id;
             
