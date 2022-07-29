@@ -93,6 +93,7 @@
 
                 
                 console.log(`localid: ${localGameId}`);
+                console.log(`more localid: ${streamresponse.data[0].game_id}`)
                 TESTER = document.getElementById('tester' + localGameId);
                 Plotly.newPlot( TESTER, data , layout);
               })
