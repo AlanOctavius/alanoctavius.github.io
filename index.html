@@ -9,7 +9,6 @@
   </div>
 
   <div id="authorized" style="display: block">
-    Congrats
     <div>The top game is <span id="topgame"></span></div>
   </div>
 
@@ -54,16 +53,17 @@
 
         promiseList = [];
 
+        // for now just show to game's name
+        document.getElementById("topgame").textContent = gameresponse.data[0].name;
+
         gameresponse.data.forEach(gameData => {
-          // for now just show to game's name
-          document.getElementById("topgame").textContent =
-          gameData.name;
+          
           console.log(gameData.name + gameData.id);
           // for now just do one game
           const query = new URLSearchParams(
             {
               game_id: gameData.id,
-              first: 100,
+              first: 50,
             }
           );
           const HTMLstring =  `<div id="tester${gameData.id}" style="width:600px;height:250px;"></div>`;
