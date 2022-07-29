@@ -79,8 +79,8 @@
         });
         Promise.all(promiseList).then((responses) => {
           Promise.all(responses.map(res => res.json()))
-        }).then(data => {
-
+        }).then(dataList => {
+          dataList.forEach(data => {
             const localGameId = data[0].game_id;
             
             const viewCount = [];
@@ -100,6 +100,7 @@
             console.log(`more localid: ${streamresponse.data[0].game_id}`)
             TESTER = document.getElementById('tester' + localGameId);
             Plotly.newPlot( TESTER, data , layout);
+          })
         })
       })
       .catch((error) => {
