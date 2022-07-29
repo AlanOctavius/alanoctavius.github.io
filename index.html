@@ -64,6 +64,9 @@
                 first: 100,
               }
             );
+            const HTMLstring =  `<div id="tester${gameData.id}" style="width:600px;height:250px;"></div>`;
+            console.log(HTMLstring);
+            document.getElementById('authorized').insertAdjacentHTML('beforeend', HTMLstring.repeat(1));
 
             fetch("https://api.twitch.tv/helix/streams?" + query.toString(), {
               headers: {
@@ -88,10 +91,8 @@
                   title: 'Viewer fall off: ' + streamresponse.data[0].game_name,
                 };
 
-                const HTMLstring =  `<div id="tester${localGameId}" style="width:600px;height:250px;"></div>`;
-                console.log(HTMLstring);
-                document.getElementById('authorized').insertAdjacentHTML('beforeend', HTMLstring.repeat(1));
-
+                
+                console.log(`localid: ${localGameId}`);
                 TESTER = document.getElementById('tester' + localGameId);
                 Plotly.newPlot( TESTER, data , layout);
               })
