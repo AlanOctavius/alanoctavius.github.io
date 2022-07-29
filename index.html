@@ -65,7 +65,7 @@
               }
             );
 
-            fetch("https://api.twitch.tv/helix/streams?" + query.toString(), {
+            await fetch("https://api.twitch.tv/helix/streams?" + query.toString(), {
               headers: {
                 "Client-ID": client_id,
                 Authorization: "Bearer " + access_token,
