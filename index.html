@@ -67,7 +67,7 @@
             const HTMLstring =  `<div id="tester${gameData.id}" style="width:600px;height:250px;"></div>`;
             console.log(HTMLstring);
             document.getElementById('authorized').insertAdjacentHTML('beforeend', HTMLstring.repeat(1));
-
+            console.log(`query: ${query.toString()}`);
             fetch("https://api.twitch.tv/helix/streams?" + query.toString(), {
               headers: {
                 "Client-ID": client_id,
