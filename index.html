@@ -49,63 +49,66 @@
           Authorization: "Bearer " + access_token,
         },
       })
-        .then((gameresponse) => gameresponse.json())
-        .then((gameresponse) => {
+      .then((gameresponse) => gameresponse.json())
+      .then((gameresponse) => {
 
-          gameresponse.data.forEach(gameData => {
-            // for now just show to game's name
-            document.getElementById("topgame").textContent =
-            gameData.name;
-            console.log(gameData.name + gameData.id);
-            // for now just do one game
-            const query = new URLSearchParams(
-              {
-                id: gameData.id,
-                first: 100,
-              }
-            );
-            const HTMLstring =  `<div id="tester${gameData.id}" style="width:600px;height:250px;"></div>`;
-            console.log(HTMLstring);
-            document.getElementById('authorized').insertAdjacentHTML('beforeend', HTMLstring.repeat(1));
-            console.log(`query: ${query.toString()}`);
-            fetch("https://api.twitch.tv/helix/streams?" + query.toString(), {
-              headers: {
-                "Client-ID": client_id,
-                Authorization: "Bearer " + access_token,
-              },
-            })
-              .then((streamresponse) => streamresponse.json())
-              .then((streamresponse) => {
+        promiseList = [];
 
-                const localGameId = streamresponse.data[0].game_id;
-                
-                const viewCount = [];
-                streamresponse.data.forEach(element => {
-                  viewCount.push(element.viewer_count);
-                  
-                });
+        gameresponse.data.forEach(gameData => {
+          // for now just show to game's name
+          document.getElementById("topgame").textContent =
+          gameData.name;
+          console.log(gameData.name + gameData.id);
+          // for now just do one game
+          const query = new URLSearchParams(
+            {
+              id: gameData.id,
+              first: 100,
+            }
+          );
+          const HTMLstring =  `<div id="tester${gameData.id}" style="width:600px;height:250px;"></div>`;
+          console.log(HTMLstring);
+          document.getElementById('authorized').insertAdjacentHTML('beforeend', HTMLstring.repeat(1));
+          console.log(`query: ${query.toString()}`);
+          promiseList.push(fetch("https://api.twitch.tv/helix/streams?" + query.toString(), {
+            headers: {
+              "Client-ID": client_id,
+              Authorization: "Bearer " + access_token,
+            },
+          }))
+        });
+        Promise.all(promiseList).then((responseList) => {
 
-                data = [{y: viewCount}];
+          responseList.forEach(response => {
+            data = response.json();
 
-                layout =  {
-                  title: 'Viewer fall off: ' + streamresponse.data[0].game_name,
-                };
+            const localGameId = data[0].game_id;
+            
+            const viewCount = [];
+            streamresponse.data.forEach(element => {
+              viewCount.push(element.viewer_count);
+              
+            });
 
-                
-                console.log(`localid: ${localGameId}`);
-                console.log(`more localid: ${streamresponse.data[0].game_id}`)
-                TESTER = document.getElementById('tester' + localGameId);
-                Plotly.newPlot( TESTER, data , layout);
-              })
-              .catch((error) => {
-                console.log(error);
-              });
-          });
-                
+            data = [{y: viewCount}];
+
+            layout =  {
+              title: 'Viewer fall off: ' + streamresponse.data[0].game_name,
+            };
+
+            
+            console.log(`localid: ${localGameId}`);
+            console.log(`more localid: ${streamresponse.data[0].game_id}`)
+            TESTER = document.getElementById('tester' + localGameId);
+            Plotly.newPlot( TESTER, data , layout);
+          })
         })
         .catch((error) => {
           console.log(error);
         });
+      });
+                
+        
     } else {
       // hide data segment
       document.getElementById("authorized").style.display = "none";
