@@ -17,6 +17,7 @@ const chartHTMLEnd = '" style="width:600px;height:250px;"></div>'
 // Twitch api strings
 const TWITCH_TOP = "games/top";
 const TWITCH_STREAM = "streams?";
+const TWITCH_GAME = "games?";
 
 // How many streams per game to fetch
 const NUM_STREAMS = 50;
@@ -36,6 +37,58 @@ function twitchCall(path, query=null) {
       Authorization: "Bearer " + access_token,
     },
   })
+}
+
+// Compare click function
+function compareNewGame() {
+  var gameName = document.getElementById("gameName").value;
+  console.log("Searching for " + gameName)
+  var nameQuery =new URLSearchParams({
+    name: gameName,
+  });
+
+  // get game id
+  twitchCall(TWITCH_GAME,nameQuery)
+  .then((gameresponse) => gameresponse.json())
+  .then((gameresponse) => {
+
+    var streamQuery = new URLSearchParams(
+      {
+        game_id: gameresponse.id,
+        first: NUM_STREAMS,
+      }
+    );
+
+    //get stream data from id
+    twitchCall(TWITCH_STREAM,streamQuery)
+    .then((streamData) => streamData.json())
+    .then((streamData) => {
+      const localGameId = streamData.data[0].game_id;
+        
+      // create HTML element for the game
+      const HTMLstring =  chartHTMLStart + "Q" + localGameId + chartHTMLEnd;
+      document.getElementById('queryGamesId').insertAdjacentHTML('afterbegin', HTMLstring);
+
+
+      // gather data for chart
+      const viewCount = [];
+      streamData.data.forEach(element => {
+        viewCount.push(element.viewer_count);
+        
+      });
+
+      data = [{y: viewCount}];
+
+      layout =  {
+        title: 'Viewer fall off: ' + streamData.data[0].game_name,
+      };
+
+      
+      TESTER = document.getElementById('testerQ' + localGameId);
+      Plotly.newPlot( TESTER, data , layout);
+    });
+
+  });
 }
 
 
@@ -99,8 +152,8 @@ if (document.location.hash && document.location.hash != "") {
         const localGameId = streamData.data[0].game_id;
         
         // create HTML element for the game
-        const HTMLstring =  `<div id="tester${localGameId}" style="width:600px;height:250px;"></div>`;
-        document.getElementById('authorized').insertAdjacentHTML('beforeend', HTMLstring);
+        const HTMLstring =  chartHTMLStart + localGameId + chartHTMLEnd;
+        document.getElementById('topGamesId').insertAdjacentHTML('beforeend', HTMLstring);
 
 
         // gather data for chart
