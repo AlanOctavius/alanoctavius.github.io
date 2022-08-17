@@ -16,12 +16,14 @@
       <a href="" id="authorize">Connect with Twitch</a>
     </div>
 
-    <div id="preauthorized" class="container" style="display: block">
+    <div id="authorized" class="container" style="display: block">
       <div class="row">The top game is <span id="topgame"></span></div>
       <div class="row">
-        <label for="gameName"> Enter game to compare: </label>
-        <input type="text" id="gameName">
-        <button onclick="compareNewGame()">Compare</button>
+        <div class="col">
+          <label for="gameName"> Enter game to compare: </label>
+          <input type="text" id="gameName">
+          <button onclick="compareNewGame()">Compare</button>
+        </div>
       </div>
       <div class="row">
         
