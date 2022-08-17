@@ -1,0 +1,133 @@
+
+
+// Set up constants
+
+// Authorization strings
+const client_id = "x6juv2f95gdvktkvae8xhw1llrat1x";
+const redirect_uri = "https://alanoctavius.github.io/";
+
+// Global authorization
+let access_token;
+
+
+// Dynmaic html strings
+const chartHTMLStart = '<div id="tester'
+const chartHTMLEnd = '" style="width:600px;height:250px;"></div>'
+
+// Twitch api strings
+const TWITCH_TOP = "games/top";
+const TWITCH_STREAM = "streams?";
+
+// How many streams per game to fetch
+const NUM_STREAMS = 50;
+
+// Convenience for function for twitch calls
+function twitchCall(path, query=null) {
+  let qString
+  if (query === null) {
+    qString = query.toString();
+  } else {
+    qString = '';
+  }
+
+  return fetch("https://api.twitch.tv/helix/"+ path + qString, {
+    headers: {
+      "Client-ID": client_id,
+      Authorization: "Bearer " + access_token,
+    },
+  })
+}
+
+
+// Inject authorization link
+
+document
+  .getElementById("authorize")
+  .setAttribute(
+    "href",
+    "https://id.twitch.tv/oauth2/authorize?client_id=" +
+      client_id +
+      "&redirect_uri=" +
+      encodeURIComponent(redirect_uri) +
+      "&response_type=token"
+  );
+
+// Check if we are an authorized with twitch
+if (document.location.hash && document.location.hash != "") {
+  // hide authorization segment
+  document.getElementById("authorized").style.display = "block";
+  document.getElementById("preauthorized").style.display = "none";
+
+  // get users access token
+  var parsedHash = new URLSearchParams(window.location.hash.slice(1));
+  if (parsedHash.get("access_token")) {
+    access_token = parsedHash.get("access_token");
+  }
+
+  // fetch top games list
+  twitchCall(TWITCH_TOP)
+  .then((gameresponse) => gameresponse.json())
+  .then((gameresponse) => {
+
+    promiseList = [];
+
+    // for now just show to game's name
+    document.getElementById("topgame").textContent = gameresponse.data[0].name;
+
+    // for each game fetch streams list
+    gameresponse.data.forEach(gameData => {
+      
+      // make the query
+      const query = new URLSearchParams(
+        {
+          game_id: gameData.id,
+          first: NUM_STREAMS,
+        }
+      );
+
+      // Add request to promise list
+      promiseList.push(twitchCall(TWITCH_STREAM,query))
+    });
+
+    // Process all fetches in a block
+    Promise.all(promiseList).then((responses) =>
+      // Get json version of data
+      Promise.all(responses.map(res => res.json()))
+    ).then(dataList => {
+      dataList.forEach(streamData => {
+
+        const localGameId = streamData.data[0].game_id;
+        
+        // create HTML element for the game
+        const HTMLstring =  `<div id="tester${localGameId}" style="width:600px;height:250px;"></div>`;
+        document.getElementById('authorized').insertAdjacentHTML('beforeend', HTMLstring);
+
+
+        // gather data for chart
+        const viewCount = [];
+        streamData.data.forEach(element => {
+          viewCount.push(element.viewer_count);
+          
+        });
+
+        data = [{y: viewCount}];
+
+        layout =  {
+          title: 'Viewer fall off: ' + streamData.data[0].game_name,
+        };
+
+        
+        TESTER = document.getElementById('tester' + localGameId);
+        Plotly.newPlot( TESTER, data , layout);
+      })
+    })
+  })
+  .catch((error) => {
+    console.log(error);
+  });                
+    
+} else {
+  // hide data segment
+  document.getElementById("authorized").style.display = "none";
+  document.getElementById("preauthorized").style.display = "block";
+}
