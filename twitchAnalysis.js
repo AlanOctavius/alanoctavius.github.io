@@ -52,6 +52,13 @@ function compareNewGame() {
   .then((gameresponse) => gameresponse.json())
   .then((gameresponse) => {
 
+    if (gameresponse.data.length === 0) {
+      console.log("Can not find data for search");
+      document.getElementById('searchErrorId').innerText = "Error finding game, please get exact name by searching on twitch"
+    } else {
+      document.getElementById('searchErrorId').innerText = "";
+    }
+
     var streamQuery = new URLSearchParams(
       {
         game_id: gameresponse.data[0].id,
