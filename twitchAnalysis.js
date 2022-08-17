@@ -54,7 +54,7 @@ function compareNewGame() {
 
     var streamQuery = new URLSearchParams(
       {
-        game_id: gameresponse[0].id,
+        game_id: gameresponse.data[0].id,
         first: NUM_STREAMS,
       }
     );
