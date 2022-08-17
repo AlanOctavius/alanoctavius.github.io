@@ -24,7 +24,7 @@ const NUM_STREAMS = 50;
 // Convenience for function for twitch calls
 function twitchCall(path, query=null) {
   let qString
-  if (query === null) {
+  if (query !== null) {
     qString = query.toString();
   } else {
     qString = '';
