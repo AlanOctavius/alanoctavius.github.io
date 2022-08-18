@@ -192,7 +192,7 @@ if (document.location.hash && document.location.hash != "") {
         });
 
         //get score
-        const score = 0;
+        let score = 0;
         viewCount.forEach( (count, index) => {
           score += count - averageCurve[index];
         });
