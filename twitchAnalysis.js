@@ -165,7 +165,7 @@ if (document.location.hash && document.location.hash != "") {
           normalCount.push(element.viewer_count/streamData.data[0].viewer_count);
           
         });
-        normalCounts.push(rawCount)
+        normalCounts.push(normalCount)
 
       })
 
