@@ -15,9 +15,9 @@ const chartHTMLStart = '<h3>'
 const chartHTMLMid = '</h3> <div id="tester';
 const chartHTMLEnd = '" style="width:600px;height:250px;"></div>';
 
-const TICK = "\uF26E";
-const DOUBLE_TICK = "\uF269";
-const CROSS = "\uF659";
+const TICK = '<i class="bi bi-check"></i>';
+const DOUBLE_TICK = '<i class="bi bi-check-all"></i>';
+const CROSS = '<i class="bi bi-x"></i>';
 
 // Twitch api strings
 const TWITCH_TOP = "games/top";
