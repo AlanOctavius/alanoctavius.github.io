@@ -171,7 +171,12 @@ if (document.location.hash && document.location.hash != "") {
 
       const zip = (...arr) => Array(Math.max(...arr.map(a => a.length))).fill().map((_,i) => arr.map(a => a[i])); 
 
-      const middlesStep = zip(...normalCounts)
+      let middlesStep = zip(...normalCounts)
+
+      // clean undefined values
+      middlesStep = middlesStep.map(list => {list.map(entry => {
+        entry === undefined ? 0 : entry
+      })}); 
       const averageCurve = middlesStep.map( positionCounts => {
         return positionCounts.reduce((partialSum, a) => partialSum + a, 0)/positionCounts.length;
       })
