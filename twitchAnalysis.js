@@ -88,8 +88,10 @@ function makePlot( streamData, isQuery=false) {
 
   // if this is query we change the id
   var isQueryString = "";
+  var insertId = "topGamesId";
   if (isQuery) {
     isQueryString = "Q";
+    insertId = "queryGamesId";
   }
   const localGameId = streamData.data[0].game_id;
         
@@ -113,7 +115,7 @@ function makePlot( streamData, isQuery=false) {
 
   // create HTML element for the game
   const HTMLstring =  chartHTMLStart + streamData.data[0].game_name + ' Score: ' + score.toPrecision(3) + getScoreIcon(score) + chartHTMLMid + isQueryString + localGameId + chartHTMLEnd;
-  document.getElementById('queryGamesId').insertAdjacentHTML('afterbegin', HTMLstring);
+  document.getElementById(insertId).insertAdjacentHTML('afterbegin', HTMLstring);
   
   TESTER = document.getElementById('tester' + isQueryString + localGameId);
   Plotly.newPlot( TESTER, data);
@@ -200,6 +202,7 @@ if (document.location.hash && document.location.hash != "") {
 
       })
 
+      // I don't really know whats happening here but it works
       const zip = (...arr) => Array(Math.max(...arr.map(a => a.length))).fill().map((_,i) => arr.map(a => a[i])); 
 
       let middlesStep = zip(...normalCounts)
