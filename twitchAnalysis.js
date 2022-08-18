@@ -194,7 +194,7 @@ if (document.location.hash && document.location.hash != "") {
         //get score
         let score = 0;
         viewCount.forEach( (count, index) => {
-          score += count - averageCurve[index];
+          score += (count/viewCount[0]) - averageCurve[index];
         });
 
         data = [{y: viewCount}];
