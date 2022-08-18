@@ -11,8 +11,12 @@ let access_token;
 
 
 // Dynmaic html strings
-const chartHTMLStart = '<div id="tester'
-const chartHTMLEnd = '" style="width:600px;height:250px;"></div>'
+const chartHTMLStart = '<div id="tester';
+const chartHTMLEnd = '" style="width:600px;height:250px;"></div>';
+
+const TICK = "\uF26E";
+const DOUBLE_TICK = "\uF269";
+const CROSS = "\uF659";
 
 // Twitch api strings
 const TWITCH_TOP = "games/top";
@@ -96,7 +100,7 @@ function compareNewGame() {
       data = [{y: viewCount}];
 
       layout =  {
-        title: 'Viewer fall off: ' + streamData.data[0].game_name + ' Score: ' + score.toPrecision(3),
+        title: 'Viewer fall off: ' + streamData.data[0].game_name + ' Score: ' + score.toPrecision(3) + getScoreIcon(score),
       };
 
       
@@ -105,6 +109,16 @@ function compareNewGame() {
     });
 
   });
+}
+
+function getScoreIcon(score) {
+  if (score>2) {
+    return DOUBLE_TICK;
+  } else if (score>0) {
+    return TICK;
+  } else {
+    return CROSS;
+  }
 }
 
 
@@ -213,7 +227,7 @@ if (document.location.hash && document.location.hash != "") {
         data = [{y: viewCount}];
 
         layout =  {
-          title: 'Viewer fall off: ' + streamData.data[0].game_name + ' Score: ' + score.toPrecision(3),
+          title: 'Viewer fall off: ' + streamData.data[0].game_name + ' Score: ' + score.toPrecision(3) + getScoreIcon(score),
         };
 
         
