@@ -171,7 +171,8 @@ if (document.location.hash && document.location.hash != "") {
 
       const zip = (...arr) => Array(Math.max(...arr.map(a => a.length))).fill().map((_,i) => arr.map(a => a[i])); 
 
-      const averageCurve = zip(...normalCounts).map( positionCounts => {
+      const middlesStep = zip(...normalCounts)
+      const averageCurve = middlesStep.map( positionCounts => {
         return positionCounts.reduce((partialSum, a) => partialSum + a, 0)/positionCounts.length;
       })
 
