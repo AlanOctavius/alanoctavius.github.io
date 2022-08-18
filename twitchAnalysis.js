@@ -165,6 +165,9 @@ if (document.location.hash && document.location.hash != "") {
           normalCount.push(element.viewer_count/streamData.data[0].viewer_count);
           
         });
+        while( normalCount.length< NUM_STREAMS){
+
+        }
         normalCounts.push(normalCount)
 
       })
@@ -174,7 +177,7 @@ if (document.location.hash && document.location.hash != "") {
       let middlesStep = zip(...normalCounts)
 
       const averageCurve = middlesStep.map( positionCounts => {
-        return positionCounts.reduce((partialSum, a) => partialSum + a, 0)/positionCounts.length;
+        return positionCounts.reduce((partialSum, a) => {if(a !==undefined) {partialSum + a}}, 0)/positionCounts.length;
       })
 
       dataList.forEach(streamData => {
