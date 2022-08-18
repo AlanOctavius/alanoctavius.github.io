@@ -165,9 +165,6 @@ if (document.location.hash && document.location.hash != "") {
           normalCount.push(element.viewer_count/streamData.data[0].viewer_count);
           
         });
-        while( normalCount.length< NUM_STREAMS){
-
-        }
         normalCounts.push(normalCount)
 
       })
