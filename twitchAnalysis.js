@@ -154,6 +154,27 @@ if (document.location.hash && document.location.hash != "") {
       // Get json version of data
       Promise.all(responses.map(res => res.json()))
     ).then(dataList => {
+
+      const normalCounts = [];
+
+      // create average curve
+      dataList.forEach(streamData => { 
+        // gather data for chart
+        const normalCount = [];
+        streamData.data.forEach(element => {
+          normalCount.push(element.viewer_count/streamData.data[0].viewer_count);
+          
+        });
+        normalCounts.push(rawCount)
+
+      })
+
+      const zip = (...arr) => Array(Math.max(...arr.map(a => a.length))).fill().map((_,i) => arr.map(a => a[i])); 
+
+      const averageCurve = zip(...normalCounts).map( positionCounts => {
+        return positionCounts.reduce((partialSum, a) => partialSum + a, 0)/positionCounts.length;
+      })
+
       dataList.forEach(streamData => {
 
         const localGameId = streamData.data[0].game_id;
@@ -170,10 +191,16 @@ if (document.location.hash && document.location.hash != "") {
           
         });
 
+        //get score
+        const score = 0;
+        viewCount.forEach( (count, index) => {
+          score += count - averageCurve[index];
+        });
+
         data = [{y: viewCount}];
 
         layout =  {
-          title: 'Viewer fall off: ' + streamData.data[0].game_name,
+          title: 'Viewer fall off: ' + streamData.data[0].game_name + 'Score: ' + score,
         };
 
         
