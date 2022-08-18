@@ -11,7 +11,8 @@ let access_token;
 
 
 // Dynmaic html strings
-const chartHTMLStart = '<div id="tester';
+const chartHTMLStart = '<h3>'
+const chartHTMLMid = '</h3> <div id="tester';
 const chartHTMLEnd = '" style="width:600px;height:250px;"></div>';
 
 const TICK = "\uF26E";
@@ -77,38 +78,45 @@ function compareNewGame() {
     twitchCall(TWITCH_STREAM,streamQuery)
     .then((streamData) => streamData.json())
     .then((streamData) => {
-      const localGameId = streamData.data[0].game_id;
-        
-      // create HTML element for the game
-      const HTMLstring =  chartHTMLStart + "Q" + localGameId + chartHTMLEnd;
-      document.getElementById('queryGamesId').insertAdjacentHTML('afterbegin', HTMLstring);
-
-
-      // gather data for chart
-      const viewCount = [];
-      streamData.data.forEach(element => {
-        viewCount.push(element.viewer_count);
-        
-      });
-
-      //get score
-      let score = 0;
-      viewCount.forEach( (count, index) => {
-        score += (count/viewCount[0]) - averageCurve[index];
-      });
-
-      data = [{y: viewCount}];
-
-      layout =  {
-        title: 'Viewer fall off: ' + streamData.data[0].game_name + ' Score: ' + score.toPrecision(3) + getScoreIcon(score),
-      };
-
-      
-      TESTER = document.getElementById('testerQ' + localGameId);
-      Plotly.newPlot( TESTER, data , layout);
+      makePlot(streamData, true);
     });
 
   });
+}
+
+function makePlot( streamData, isQuery=false) {
+
+  // if this is query we change the id
+  var isQueryString = "";
+  if (isQuery) {
+    isQueryString = "Q";
+  }
+  const localGameId = streamData.data[0].game_id;
+        
+
+
+
+  // gather data for chart
+  const viewCount = [];
+  streamData.data.forEach(element => {
+    viewCount.push(element.viewer_count);
+    
+  });
+
+  //get score
+  let score = 0;
+  viewCount.forEach( (count, index) => {
+    score += (count/viewCount[0]) - averageCurve[index];
+  });
+
+  data = [{y: viewCount}];
+
+  // create HTML element for the game
+  const HTMLstring =  chartHTMLStart + streamData.data[0].game_name + ' Score: ' + score.toPrecision(3) + getScoreIcon(score) + chartHTMLMid + isQueryString + localGameId + chartHTMLEnd;
+  document.getElementById('queryGamesId').insertAdjacentHTML('afterbegin', HTMLstring);
+  
+  TESTER = document.getElementById('tester' + isQueryString + localGameId);
+  Plotly.newPlot( TESTER, data);
 }
 
 function getScoreIcon(score) {
@@ -173,8 +181,8 @@ if (document.location.hash && document.location.hash != "") {
     });
 
     // Process all fetches in a block
-    Promise.all(promiseList).then((responses) =>
-      // Get json version of data
+    Promise.all(promiseList)
+    .then((responses) =>
       Promise.all(responses.map(res => res.json()))
     ).then(dataList => {
 
@@ -203,36 +211,7 @@ if (document.location.hash && document.location.hash != "") {
       })
 
       dataList.forEach(streamData => {
-
-        const localGameId = streamData.data[0].game_id;
-        
-        // create HTML element for the game
-        const HTMLstring =  chartHTMLStart + localGameId + chartHTMLEnd;
-        document.getElementById('topGamesId').insertAdjacentHTML('beforeend', HTMLstring);
-
-
-        // gather data for chart
-        const viewCount = [];
-        streamData.data.forEach(element => {
-          viewCount.push(element.viewer_count);
-          
-        });
-
-        //get score
-        let score = 0;
-        viewCount.forEach( (count, index) => {
-          score += (count/viewCount[0]) - averageCurve[index];
-        });
-
-        data = [{y: viewCount}];
-
-        layout =  {
-          title: 'Viewer fall off: ' + streamData.data[0].game_name + ' Score: ' + score.toPrecision(3) + getScoreIcon(score),
-        };
-
-        
-        TESTER = document.getElementById('tester' + localGameId);
-        Plotly.newPlot( TESTER, data , layout);
+        makePlot(streamData);
       })
     })
   })
