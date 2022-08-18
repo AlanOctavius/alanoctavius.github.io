@@ -204,7 +204,7 @@ if (document.location.hash && document.location.hash != "") {
         data = [{y: viewCount}];
 
         layout =  {
-          title: 'Viewer fall off: ' + streamData.data[0].game_name + 'Score: ' + score,
+          title: 'Viewer fall off: ' + streamData.data[0].game_name + ' Score: ' + score.toPrecision(3),
         };
 
         
