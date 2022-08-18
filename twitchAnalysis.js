@@ -22,6 +22,9 @@ const TWITCH_GAME = "games?";
 // How many streams per game to fetch
 const NUM_STREAMS = 50;
 
+//set up averageCurve
+var averageCurve;
+
 // Convenience for function for twitch calls
 function twitchCall(path, query=null) {
   let qString
@@ -84,10 +87,16 @@ function compareNewGame() {
         
       });
 
+      //get score
+      let score = 0;
+      viewCount.forEach( (count, index) => {
+        score += (count/viewCount[0]) - averageCurve[index];
+      });
+
       data = [{y: viewCount}];
 
       layout =  {
-        title: 'Viewer fall off: ' + streamData.data[0].game_name,
+        title: 'Viewer fall off: ' + streamData.data[0].game_name + ' Score: ' + score.toPrecision(3),
       };
 
       
@@ -173,7 +182,7 @@ if (document.location.hash && document.location.hash != "") {
 
       let middlesStep = zip(...normalCounts)
 
-      const averageCurve = middlesStep.map( positionCounts => {
+      averageCurve = middlesStep.map( positionCounts => {
         var definedCount = 0;
         return positionCounts.reduce((partialSum, a) => {
           if(a !==undefined) { definedCount++; return partialSum + a} else {return partialSum}}, 0)/definedCount;
