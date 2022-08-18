@@ -174,7 +174,8 @@ if (document.location.hash && document.location.hash != "") {
       let middlesStep = zip(...normalCounts)
 
       const averageCurve = middlesStep.map( positionCounts => {
-        return positionCounts.reduce((partialSum, a) => {if(a !==undefined) {partialSum + a}}, 0)/positionCounts.length;
+        var definedCount = 0;
+        return positionCounts.reduce((partialSum, a) => {if(a !==undefined) { definedCount++; return partialSum + a}}, 0)/definedCount;
       })
 
       dataList.forEach(streamData => {
