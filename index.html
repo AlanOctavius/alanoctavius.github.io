@@ -27,17 +27,15 @@
 
     <div id="authorized" class="row" style="display: block">
       <div class="col">
-        <div class="row">
-          <div id="explanation">
-            This is a tool to help identify "good" games to stream.
-            A "good" game is one with a flatter viewer fall off curve.
-            The flatter the curve the more positive the metric.
-          </div>
+        <div id="explanation">
+          This is a tool to help identify "good" games to stream.
+          A "good" game is one with a flatter viewer fall off curve.
+          The flatter the curve the more positive the metric.
         </div>
-        <div class="row">
+        <div>
           The top game is <span id="topgame"></span>
         </div>
-        <div class="row">
+        <div>
           <label for="gameName"> Enter game to compare: </label>
           <input type="text" id="gameName">
           <button onclick="compareNewGame()">Compare</button>
