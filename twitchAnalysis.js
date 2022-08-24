@@ -11,8 +11,8 @@ let access_token;
 
 
 // Dynmaic html strings
-const chartHTMLStart = '<h3>'
-const chartHTMLMid = '</h3> <div id="tester';
+const chartHTMLStart = '<h4>'
+const chartHTMLMid = '</h4> <div id="tester';
 const chartHTMLEnd = '" style="width:600px;height:250px;"></div>';
 
 const TICK = '<i class="bi bi-check"></i>';
