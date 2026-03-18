@@ -1,0 +1,1 @@
+Make is a Romanian rescue who is a mix of almost every breed. He is a very timid dog but slowly we are getting him to open with lots of treats and love.

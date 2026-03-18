@@ -1,0 +1,1 @@
+We are currently fostering a second Romanian rescue called Kaki. When she was young she was hit by car, which has left her with reduced mobility in her back paws, it doesn't stop her climbing all over the furniture.

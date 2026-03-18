@@ -1,0 +1,1 @@
+Fred is a Shih Tzu-Bishon cross. He is very much a couch potato and loves to play with much bigger dogs, though can't keep up.
